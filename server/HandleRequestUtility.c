@@ -38,6 +38,10 @@ void handleClientRequest(int client_socket){
 	}while (syntaxChecking(return_value, BLANK_LINE));
 	//Output the client_socket id and Request Line
 	printf("Got a call on %d: request = %s", client_socket, request_line);
+	// Request Line is like 
+	// SETUP rtsp://127.0.0.1:1501/movie.Mjpeg RTSP/1.0 
+
+
 	//Get client Header Lines & Response the client request
 	respondClientRequest(request_line, getHeaderLines(channel), client_socket);
 	
@@ -164,25 +168,30 @@ void respondClientRequest(char *request, RTSP_HEADER *header, int client_socket)
 	//Get the Requested File or Directory's name
 	pathBelowCurrentDirectory(url);
 	printf("Requested File or Directory is %s\n", url);
-	
-	//Test the requested file on the server
-	if (urlNotExist(url)){
-		//404 Not Found: the requested document does not exist on this server
-		sendNotFound(url, client_socket);
-		return;
-	}
-	//Test the requested url is a directory
-	else if (urlIsADirectory(url)){
-		//404 Not Found: the requested document does not exist on this server
-		sendNotFound(url, client_socket);
-		return;
-	}
-	//Test the method is valid in special state
-	else if (methodIsNotValidInState(method)){
-		//455 Method is not valid in this state: the method is not valid in this state
-		sendMethodNotValidInThisState(method, client_socket);
-		return;
-	}
+
+
+	// TEST THE URL FOR VALIDITY //////////////////////////////////////////////////////
+
+	// //Test the requested file on the server
+	// if (urlNotExist(url)){
+	// 	//404 Not Found: the requested document does not exist on this server
+	// 	sendNotFound(url, client_socket);
+	// 	return;
+	// }
+	// //Test the requested url is a directory
+	// else if (urlIsADirectory(url)){
+	// 	//404 Not Found: the requested document does not exist on this server
+	// 	sendNotFound(url, client_socket);
+	// 	return;
+	// }
+	// //Test the method is valid in special state
+	// else if (methodIsNotValidInState(method)){
+	// 	//455 Method is not valid in this state: the method is not valid in this state
+	// 	sendMethodNotValidInThisState(method, client_socket);
+	// 	return;
+	// }
+	/// END TEST OF URL VALIDITY ////////////////////////////////////////////
+
 
 	//Get the RTSP Request Message information
 	cseq_number = getRTSPInfo(header);

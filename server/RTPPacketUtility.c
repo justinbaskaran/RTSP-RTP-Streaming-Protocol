@@ -5,7 +5,7 @@
 	Author:			Shen Li
 	UID:			N14361265
 	Department:		Computer Science
-	Note:			This RTPPacketUtility.c file includes 
+	Note:			This RTPPacketUtility.c file includes
 					Handle RTP Packets Function.
 */
 /////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ u_int32 getVideoInfo(char *url){
 	//Initialize frame_length buffer
 	memset(frame_length, 0, NUMBER_SIZE);
 	//Open video stream channel
-	video_channel = fopen(url, "r");
+	video_channel = fopen("frame.jpg", "r");
 	if (video_channel == NULL){
 		dieWithUserMessage("fopen() failed", "unable to open video file!");
 	}
@@ -58,7 +58,7 @@ u_int32 getVideoInfo(char *url){
 	fclose(video_channel);
 
 	//Get the request video file name
-	video_file_name = url;
+	video_file_name = "frame.jpg";
 	//Set the ssrc number
 	ssrc = getRandomNumber(BASIC_NUMBER, MOD_NUMBER);
 	//Set the frame total
@@ -160,7 +160,7 @@ u_int8 *constructRTPPacket(size_t *length){
 	size_t		count;							//counter
 
 	//Open video file stream
-	video_channel = fopen(video_file_name, "r");
+	video_channel = fopen("frame.jpg", "r");
 	if (video_channel == NULL){
 		dieWithUserMessage("fopen() failed", "unable to open video file!");
 	}
@@ -168,7 +168,7 @@ u_int8 *constructRTPPacket(size_t *length){
 	fseek(video_channel, next_frame_start, 0);
 	//First step: read the length of frame
 	if (fread(frame_length, NUMBER_SIZE, ONE_SIZE, video_channel) != 1){
-		dieWithUserMessage("fread() failed", "unable to read frame length!");
+
 	}
 	//Set the next frame start position
 	next_frame_start += NUMBER_SIZE;
@@ -218,7 +218,9 @@ void catchAlarm(int ignored){
 		return;
 	}
 	//Construct RTP packet
+	while(true){
 	buffer = constructRTPPacket(&length);
+
 	//Create socket for sending rtp packets
 	udp_server_socket = setupServerUDPSocket(rtp_address, itoa(client_rtp_port));
 	if (udp_server_socket->socket < 0){
@@ -250,6 +252,6 @@ void catchAlarm(int ignored){
 	free(udp_server_socket);
 	//Increase the sequence number
 	frame_number++;
-
+	}
 	return;
 }
