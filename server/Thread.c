@@ -30,7 +30,7 @@ void *threadMain(void *thread_arguments){
 	//Deallocate memory for argument
 	free(thread_arguments);
 	//Handle the client request
-	handleClientRequest(client_socket);
+	//handleClientRequest(client_socket);
 	
 	return (NULL);
 }
