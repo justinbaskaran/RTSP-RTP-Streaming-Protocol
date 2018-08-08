@@ -1,0 +1,8 @@
+echo "Compiling Camera Code"
+g++ -o frames frames.cpp `pkg-config --cflags --libs opencv`
+
+
+echo "Compiling Client Code"
+cd client
+make
+
