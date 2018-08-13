@@ -22,7 +22,7 @@
 */
 void *threadMain(void *thread_arguments){
 	int		client_socket;		//socket descriptor for client
-	
+
 	//Guarantees that thread resources are deallocated upon return
 	pthread_detach(pthread_self());
 	//Pass the arguments
@@ -30,7 +30,7 @@ void *threadMain(void *thread_arguments){
 	//Deallocate memory for argument
 	free(thread_arguments);
 	//Handle the client request
-	//handleClientRequest(client_socket);
-	
+	handleClientRequest(client_socket);
+
 	return (NULL);
 }
